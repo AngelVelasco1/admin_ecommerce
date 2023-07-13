@@ -37,7 +37,7 @@ El proyecto  utilizará las siguientes tecnologías:
 
 ## Autor
 
-- Angel David Velasco 
+#### Angel David Velasco 
 
 ## Licencia
 
