@@ -31,18 +31,9 @@ El proyecto  utilizará las siguientes tecnologías:
 - Base de datos: [MySQL](https://www.mysql.com/)
 - Framework de desarrollo web: [Express.js](https://expressjs.com/)
 
-## Configuración del proyecto
+## Configuración Basica
 
 ...
-## Contribución
-
-Si deseas contribuir al proyecto, puedes realizar los siguientes pasos:
-
-1. Realizar un fork del repositorio en GitHub.
-2. Crear una rama con la nueva funcionalidad o corrección.
-3. Realizar los cambios y realizar los commits correspondientes.
-4. Subir los cambios a tu fork en GitHub.
-5. Abrir un pull request en el repositorio original para revisar los cambios propuestos.
 
 ## Autor
 
