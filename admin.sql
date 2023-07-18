@@ -1,4 +1,4 @@
--- Active: 1689438709365@@127.0.0.1@3306@adminecommerce
+-- Active: 1688557746203@@localhost@3306@adminecommerce
 CREATE DATABASE adminEcommerce;
 
 CREATE TABLE products(

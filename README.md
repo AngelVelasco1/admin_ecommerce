@@ -31,6 +31,9 @@ El proyecto  utilizará las siguientes tecnologías:
 - Base de datos: [MySQL](https://www.mysql.com/)
 - Framework de desarrollo web: [Express.js](https://expressjs.com/)
 
+## Diagrama Base de Datos
+
+![Alt text](image.png)
 ## Configuración Basica
 
 ...
