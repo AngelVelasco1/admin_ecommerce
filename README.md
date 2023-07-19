@@ -1,4 +1,4 @@
-![image](https://github.com/AngelVelasco1/admin_ecommerce/assets/82744167/1c6a7a4f-74d5-4d23-b093-1939f6caeda7)# Administración de E-commerce
+# Administración de E-commerce
 
 Este proyecto tiene como objetivo desarrollar un sistema de administración para un e-commerce. El sistema permitirá gestionar proveedores, productos, promociones y otras entidades importantes para el funcionamiento del e-commerce.
 
