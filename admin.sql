@@ -1,6 +1,12 @@
--- Active: 1688557746203@@localhost@3306@adminecommerce
+-- Active: 1689076122584@@localhost@3306@adminecommerce
 CREATE DATABASE adminEcommerce;
-
+CREATE TABLE customer (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(200) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    phone VARCHAR(20) NOT NULL,
+    address VARCHAR(50)
+);
 CREATE TABLE products(
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL,
@@ -13,6 +19,15 @@ CREATE TABLE products(
     FOREIGN KEY (category) REFERENCES categories(id),
     FOREIGN KEY (promotion_id) REFERENCES promotions(id)
 );
+
+CREATE TABLE purchases (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    customer_id BIGINT,
+    product_id BIGINT,
+    FOREIGN KEY (customer_id) REFERENCES customer(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
 CREATE TABLE suppliers (
     id INT PRIMARY KEY,
     name VARCHAR(200) NOT NULL,

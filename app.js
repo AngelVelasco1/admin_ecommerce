@@ -14,6 +14,7 @@ const app = express();
 app.use(express.json());
 
 //? Use routes
+app.use("/customer", storageCustomer);
 app.use("/products", storageProducts);
 app.use("/suppliers", storageSuppliers);
 app.use("/promotions", storagePromotions);
