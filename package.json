@@ -3,8 +3,10 @@
   "version": "0.0.1",
   "description": "Important information about the ecommerce project, its dependencies, scripts and related metadata.",
   "main": "app.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tsc": "tsc -w",
+    "dev": "nodemon --quiet ./app.js"
   },
   "keywords": [
     "ecommerce",

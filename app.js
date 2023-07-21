@@ -1,11 +1,11 @@
 //? Dependencies
 import express from 'express';
 import dotenv from 'dotenv';
+import mysql from 'mysql2';
+
 
 //? Routes
 import storageProducts from './routes/products.js';
-import storageSuppliers from './routes/suppliers.js';
-import storagePromotions from './routes/promotions.js'
 
 //? Enviroment Variables
 dotenv.config();
@@ -14,13 +14,20 @@ const app = express();
 app.use(express.json());
 
 //? Use routes
-app.use("/customer", storageCustomer);
 app.use("/products", storageProducts);
-app.use("/suppliers", storageSuppliers);
-app.use("/promotions", storagePromotions);
 
+//? Connection to database
+let conx;
+
+export function connectToDB() {
+  if (!conx) {
+    const config = JSON.parse(process.env.CONNECT);
+    conx =  mysql.createPool(config);
+  }
+  return conx;
+}
 //? Server
-const config = JSON.parse(process.env.MY_CONFIG);
+const config = JSON.parse(process.env.CONFIG);
 app.listen(config, () => {
     console.log(`http://${config.hostname}:${config.port}`);
 })

@@ -1,4 +1,4 @@
--- Active: 1689076122584@@localhost@3306@adminecommerce
+-- Active: 1689861893713@@127.0.0.1@3306@adminecommerce
 CREATE DATABASE adminEcommerce;
 CREATE TABLE customer (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -19,6 +19,7 @@ CREATE TABLE products(
     FOREIGN KEY (category) REFERENCES categories(id),
     FOREIGN KEY (promotion_id) REFERENCES promotions(id)
 );
+ALTER TABLE products MODIFY COLUMN category INT;
 
 CREATE TABLE purchases (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
