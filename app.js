@@ -16,16 +16,7 @@ app.use(express.json());
 //? Use routes
 app.use("/products", storageProducts);
 
-//? Connection to database
-let conx;
 
-export function connectToDB() {
-  if (!conx) {
-    const config = JSON.parse(process.env.CONNECT);
-    conx =  mysql.createPool(config);
-  }
-  return conx;
-}
 //? Server
 const config = JSON.parse(process.env.CONFIG);
 app.listen(config, () => {

@@ -8,71 +8,84 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Expose, Transform } from 'class-transformer';
-import { Validate, IsInt, IsDecimal, IsString, Min, Max } from 'class-validator';
+import { IsInt, IsString, Min, Max } from 'class-validator';
 export class Products {
     constructor(NAM, DESC, PRIC, STK, DIS_PER, CAT) {
-        this.NAM = NAM;
-        this.DESC = DESC;
-        this.PRIC = PRIC;
-        this.STK = STK;
-        this.DIS_PER = DIS_PER;
-        this.CAT = CAT;
+        this.name = NAM;
+        this.description = DESC;
+        this.price = PRIC;
+        this.stock = STK;
+        this.discount_percentage = DIS_PER;
+        this.category = CAT;
     }
 }
 __decorate([
     Expose({ name: 'name' }),
-    Transform(({ value }) => String(value)),
-    Validate((value) => /^[a-z A-Z]+$/.test(value), {
-        message: 'El nombre contiene parametros incorrectos',
-    }),
+    Transform(({ value }) => value),
+    Transform(({ value }) => {
+        if (/^[a-z A-Z]+$/.test(value))
+            return value;
+        else
+            throw { status: 200, message: 'El nombre contiene caracteres erroneos' };
+    }, { toClassOnly: true }),
     IsString(),
     __metadata("design:type", String)
-], Products.prototype, "NAM", void 0);
+], Products.prototype, "name", void 0);
 __decorate([
     Expose({ name: 'description' }),
-    Transform(({ value }) => String(value)),
-    Validate((value) => /^[a-z A-Z]+$/.test(value), {
-        message: 'La descripcion contiene parametros incorrectos',
-    }),
+    Transform(({ value }) => {
+        if (/^[a-z A-Z]+$/.test(value))
+            return value;
+        else
+            throw { status: 200, message: 'La descripcion contiene caracteres erroneos' };
+    }, { toClassOnly: true }),
     IsString(),
     __metadata("design:type", String)
-], Products.prototype, "DESC", void 0);
+], Products.prototype, "description", void 0);
 __decorate([
     Expose({ name: 'price' }),
-    Transform(({ value }) => parseFloat(value)),
-    Validate((value) => typeof value === 'number' && Math.floor(value), {
-        message: 'El precio tiene parametros incorrectos',
-    }),
-    IsDecimal(),
+    Transform(({ value }) => {
+        if (Math.floor(value) && typeof value == 'number')
+            return Math.floor(value);
+        else
+            throw { status: 200, message: 'El precio contiene parametros incorrectos' };
+    }, { toClassOnly: true }),
+    IsInt({ message: "El precio debe ser decimal" }),
     __metadata("design:type", Number)
-], Products.prototype, "PRIC", void 0);
+], Products.prototype, "price", void 0);
 __decorate([
     Expose({ name: 'stock' }),
-    Transform(({ value }) => parseInt(value)),
-    Validate((value) => typeof value === 'number' && Math.floor(value), {
-        message: 'El stock tiene parametros incorrectos',
-    }),
-    IsInt(),
+    Transform(({ value }) => {
+        if (Math.floor(value) && typeof value == 'number')
+            return Math.floor(value);
+        else
+            throw { status: 200, message: 'El stock contiene parametros incorrectos' };
+    }, { toClassOnly: true }),
+    IsInt({ message: "El stock debe ser un numero" }),
     __metadata("design:type", Number)
-], Products.prototype, "STK", void 0);
+], Products.prototype, "stock", void 0);
 __decorate([
     Expose({ name: 'discount_percentage' }),
-    Transform(({ value }) => parseInt(value)),
-    Validate((value) => typeof value === 'number' && Math.floor(value), {
-        message: 'El porcentaje de descuento tiene parametros incorrectos',
-    }),
-    IsInt(),
+    Transform(({ value }) => {
+        if (Math.floor(value) && typeof value == 'number')
+            return Math.floor(value);
+        else
+            throw { status: 200, message: 'El porcentaje de descuento contiene parametros incorrectos' };
+    }, { toClassOnly: true }),
+    IsInt({ message: "El stock debe ser un numero" }),
     __metadata("design:type", Number)
-], Products.prototype, "DIS_PER", void 0);
+], Products.prototype, "discount_percentage", void 0);
 __decorate([
     Expose({ name: 'category' }),
-    Transform(({ value }) => parseInt(value)),
-    Validate((value) => typeof value === 'number' && Math.floor(value), {
-        message: 'La categoria es incorrecta',
-    }),
+    Transform(({ value }) => {
+        if (Math.floor(value) && typeof value == 'number')
+            return Math.floor(value);
+        else
+            throw { status: 200, message: 'La categoria contiene parametros incorrectos' };
+    }, { toClassOnly: true }),
     IsInt(),
     Min(1, { message: 'La categoria debe ser mayor o igual que 1' }),
     Max(15, { message: 'La categoria debe ser menor o igual que 15' }),
     __metadata("design:type", Number)
-], Products.prototype, "CAT", void 0);
+], Products.prototype, "category", void 0);
 //# sourceMappingURL=products.js.map
