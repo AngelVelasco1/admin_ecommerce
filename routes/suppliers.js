@@ -76,4 +76,30 @@ storageSuppliers.delete('/delete/:id', proxySuppliers, (req, res) => {
         res.status(500).send(err.message);
     }
 })
+
+storageSuppliers.patch('/update/:id', proxySuppliers, (req, res) => {
+    const  id  = req.params.id;
+    const { name, email, phone } = req.body;
+    const supplierData = {
+        name,
+        email,
+        phone,
+    };
+    try {
+        const action = 'UPDATE suppliers SET ? WHERE id = ?';
+        conx.query(action, [supplierData, id], (err) => {
+            if (err) {
+                console.error("Error de conexion:", err.message);
+                return res.status(500);
+            } else {
+                return res.status(201).send(JSON.stringify(supplierData));
+            }
+        })
+
+
+    } catch (err) {
+        res.status(500).send(err.message);
+
+    }
+})
 export default storageSuppliers;
