@@ -121,8 +121,6 @@ storageProducts.delete('/delete/:id', proxyProducts, (req, res) => {
                 })
             }
         })
-
-
     } catch (err) {
         res.status(500).send(err.message);
 

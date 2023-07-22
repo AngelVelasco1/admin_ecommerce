@@ -8,7 +8,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Expose, Transform } from 'class-transformer';
-import { IsString, IsEmail, IsPhoneNumber } from 'class-validator';
+import { IsString, IsPhoneNumber } from 'class-validator';
 export class Suppliers {
     constructor(NAM, EMA, PHO) {
         this.name = NAM;
@@ -29,9 +29,8 @@ __decorate([
 ], Suppliers.prototype, "name", void 0);
 __decorate([
     Expose({ name: 'email' }),
-    IsEmail({}, { message: 'El campo debe ser una dirección de correo electrónico válida' }),
     Transform(({ value }) => {
-        if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value))
+        if (/^[a-z A-Z 0-9._%+-]+@[a-z A-Z 0-9.-]+\.[a-z A-Z]+$/.test(value))
             return value;
         else
             throw { status: 200, message: 'La direccion contiene caracteres erroneos' };
@@ -40,13 +39,13 @@ __decorate([
 ], Suppliers.prototype, "email", void 0);
 __decorate([
     Expose({ name: 'phone' }),
-    IsPhoneNumber(),
     Transform(({ value }) => {
         if (/^(\+\d{1,3})?[-.\s]?\(?\d{1,}\)?[-.\s]?\d{1,}[-.\s]?\d{1,}$/.test(value))
             return value;
         else
             throw { status: 200, message: 'El telefono contiene parametros incorrectos' };
     }, { toClassOnly: true }),
+    IsPhoneNumber(),
     __metadata("design:type", Number)
 ], Suppliers.prototype, "phone", void 0);
 //# sourceMappingURL=suppliers.js.map

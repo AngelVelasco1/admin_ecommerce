@@ -11,7 +11,7 @@ proxySuppliers.use((req, res, next) => {
     try {
         let config = JSON.parse(process.env.CONNECT);
         conx = mysql.createPool(config);
-        let data = plainToClass(Suppliers, req.body || req.params, { excludeExtraneousValues: true });
+        let data = plainToClass(Suppliers, req.body || req.params , { excludeExtraneousValues: true });
         req.body = JSON.parse(JSON.stringify(data));
         next();
 
