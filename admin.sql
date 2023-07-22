@@ -1,5 +1,6 @@
 -- Active: 1689861893713@@127.0.0.1@3306@adminecommerce
-CREATE DATABASE adminEcommerce;
+CREATE DATABASE adminecommerce;
+USE adminecommerce;
 CREATE TABLE products(
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL,
@@ -19,14 +20,12 @@ CREATE TABLE customer (
     role_id INT, 
     user_info INT,
     FOREIGN KEY (role_id) REFERENCES role (id),
-    FOREIGN KEY (user_info) REFERENCES user_info(id)
 );
 CREATE TABLE suppliers (
     id INT PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
-    user_info INT NOT NULL,
-    role_id INT,
-    FOREIGN KEY (user_info) REFERENCES user_info(id),
+    email VARCHAR(255),
+    phone VARCHAR(50),
     FOREIGN KEY (role_id) REFERENCES role(id)
 );
 CREATE TABLE purchases (
@@ -43,6 +42,7 @@ CREATE TABLE promotions (
     start_date DATETIME NOT NULL,
     end_date DATETIME NOT NULL
 );
+
 CREATE TABLE categories (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL
@@ -64,7 +64,8 @@ CREATE TABLE product_supplier (
     FOREIGN KEY (product_id) REFERENCES products(id),
     FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
 );
-/* Default Inserts */
+
+
 INSERT INTO categories (id, name) VALUES (1, "Electronic");
 INSERT INTO categories (id, name) VALUES (2, "Clothes");
 INSERT INTO categories (id, name) VALUES (3, "Home");
@@ -74,3 +75,9 @@ INSERT INTO categories (id, name) VALUES (6, "Toys");
 INSERT INTO categories (id, name) VALUES (7, "Food");
 INSERT INTO categories (id, name) VALUES (8, "Entertaitment");
 INSERT INTO categories (id, name) VALUES (9, "Health");
+
+INSERT INTO role (id, name) VALUES (1, "supplier");
+INSERT INTO role (id, name) VALUES (2, "customer");
+
+ALTER TABLE suppliers MODIFY COLUMN email VARCHAR(255) NOT NULL UNIQUE;
+ALTER TABLE suppliers MODIFY COLUMN phone VARCHAR(50) NOT NULL UNIQUE;

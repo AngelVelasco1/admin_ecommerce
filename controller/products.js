@@ -21,7 +21,6 @@ export class Products {
 }
 __decorate([
     Expose({ name: 'name' }),
-    Transform(({ value }) => value),
     Transform(({ value }) => {
         if (/^[a-z A-Z]+$/.test(value))
             return value;

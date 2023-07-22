@@ -1,11 +1,10 @@
 //? Dependencies
 import express from 'express';
 import dotenv from 'dotenv';
-import mysql from 'mysql2';
-
 
 //? Routes
 import storageProducts from './routes/products.js';
+import storageSuppliers from './routes/suppliers.js';
 
 //? Enviroment Variables
 dotenv.config();
@@ -15,7 +14,7 @@ app.use(express.json());
 
 //? Use routes
 app.use("/products", storageProducts);
-
+app.use("/suppliers", storageSuppliers);
 
 //? Server
 const config = JSON.parse(process.env.CONFIG);

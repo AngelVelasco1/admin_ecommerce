@@ -3,7 +3,6 @@ import {IsInt, IsDecimal, IsString, Min, Max} from 'class-validator';
 
 export class Products {
     @Expose({ name: 'name' })
-    @Transform(({ value }) => value)
     @Transform(({ value }) => {
         if (/^[a-z A-Z]+$/.test(value))
             return value
