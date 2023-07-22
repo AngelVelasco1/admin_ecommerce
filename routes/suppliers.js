@@ -19,7 +19,7 @@ storageSuppliers.post('/add', proxySuppliers, (req, res) => {
     }
     try {
         const checkSupplier = 'SELECT id FROM suppliers WHERE name = ?';
-        conx.query(checkSupplier, [name, email, ], (err, result) => {
+        conx.query(checkSupplier, [name], (err, result) => {
             if (err) {
                 console.error('Error de conexión:', err.message);
                 return res.status(500).send('Error interno del servidor');
