@@ -76,7 +76,7 @@ storageSuppliers.delete('/delete/:id', proxySuppliers, (req, res) => {
         res.status(500).send(err.message);
     }
 })
-
+//? Update
 storageSuppliers.patch('/update/:id', proxySuppliers, (req, res) => {
     const  id  = req.params.id;
     const { name, email, phone } = req.body;
@@ -99,6 +99,26 @@ storageSuppliers.patch('/update/:id', proxySuppliers, (req, res) => {
 
     } catch (err) {
         res.status(500).send(err.message);
+
+    }
+})
+//? List suppliers
+storageSuppliers.get('/list', proxySuppliers, (req, res) => {
+    try {
+        const action = 'SELECT * FROM suppliers ORDER BY name ASC';
+
+        conx.query(
+            action, (err, result) => {
+                if (err) {
+                    return res.status(500).json(err.message)
+
+                }
+                return res.status(201).json({ result });
+            });
+
+    } catch (err) {
+
+        res.status(500).json({ error: 'Error del servidor' });
 
     }
 })
