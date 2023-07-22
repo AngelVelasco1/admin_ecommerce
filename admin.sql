@@ -1,12 +1,5 @@
 -- Active: 1689861893713@@127.0.0.1@3306@adminecommerce
 CREATE DATABASE adminEcommerce;
-CREATE TABLE customer (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(200) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    phone VARCHAR(20) NOT NULL,
-    address VARCHAR(50)
-);
 CREATE TABLE products(
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL,
@@ -19,8 +12,23 @@ CREATE TABLE products(
     FOREIGN KEY (category) REFERENCES categories(id),
     FOREIGN KEY (promotion_id) REFERENCES promotions(id)
 );
-ALTER TABLE products MODIFY COLUMN category INT DEFAULT '1';
-
+CREATE TABLE customer (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(200) NOT NULL,
+    address VARCHAR(50),
+    role_id INT, 
+    user_info INT,
+    FOREIGN KEY (role_id) REFERENCES role (id),
+    FOREIGN KEY (user_info) REFERENCES user_info(id)
+);
+CREATE TABLE suppliers (
+    id INT PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    user_info INT NOT NULL,
+    role_id INT,
+    FOREIGN KEY (user_info) REFERENCES user_info(id),
+    FOREIGN KEY (role_id) REFERENCES role(id)
+);
 CREATE TABLE purchases (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     customer_id BIGINT,
@@ -29,12 +37,6 @@ CREATE TABLE purchases (
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
-CREATE TABLE suppliers (
-    id INT PRIMARY KEY,
-    name VARCHAR(200) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    phone VARCHAR(20) NOT NULL
-);
 CREATE TABLE promotions (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL,
@@ -45,6 +47,24 @@ CREATE TABLE categories (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL
 );
+
+CREATE TABLE user_info (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    phone VARCHAR(20) NOT NULL
+);
+CREATE TABLE role (
+    id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+CREATE TABLE product_supplier (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    product_id BIGINT,
+    supplier_id INT,
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
+);
+/* Default Inserts */
 INSERT INTO categories (id, name) VALUES (1, "Electronic");
 INSERT INTO categories (id, name) VALUES (2, "Clothes");
 INSERT INTO categories (id, name) VALUES (3, "Home");
@@ -54,11 +74,3 @@ INSERT INTO categories (id, name) VALUES (6, "Toys");
 INSERT INTO categories (id, name) VALUES (7, "Food");
 INSERT INTO categories (id, name) VALUES (8, "Entertaitment");
 INSERT INTO categories (id, name) VALUES (9, "Health");
-
-CREATE TABLE product_supplier (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    product_id BIGINT,
-    supplier_id INT,
-    FOREIGN KEY (product_id) REFERENCES products(id),
-    FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
-)

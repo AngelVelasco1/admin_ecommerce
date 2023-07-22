@@ -90,7 +90,7 @@ storageProducts.patch('/update/:id', proxyProducts, (req, res) => {
 
 //? Delete products
 storageProducts.delete('/delete/:id', proxyProducts, (req, res) => {
-    const { id } = req.params;
+    const  {id}  = req.params;
     if (!id) return res.status(404).send("Not found");
     try {
         const action = 'DELETE FROM products WHERE id = ?';
@@ -108,6 +108,7 @@ storageProducts.delete('/delete/:id', proxyProducts, (req, res) => {
 
     }
 })
+
 
 //? List products related to specific category
 
