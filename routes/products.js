@@ -17,7 +17,6 @@ storageProducts.post('/add', proxyProducts, (req, res) => {
         price,
         stock,
         discount_percentage
-
     };
     try {
         const action = `INSERT INTO products SET ?`;
@@ -90,7 +89,25 @@ storageProducts.patch('/update/:id', proxyProducts, (req, res) => {
 })
 
 //? Delete products
+storageProducts.delete('/delete/:id', proxyProducts, (req, res) => {
+    const { id } = req.params;
+    if (!id) return res.status(404).send("Not found");
+    try {
+        const action = 'DELETE FROM products WHERE id = ?';
+        conx.query(action, id, (err, result)  => {
+            if (err) {
+                console.error("Error de conexion:", err.message);
+                return res.status(500);
+            } else {
+                return res.status(204).send(JSON.stringify(result));
+            }
+        })
 
+    } catch (err) {
+        res.status(500).send(err.message);
+
+    }
+})
 
 //? List products related to specific category
 

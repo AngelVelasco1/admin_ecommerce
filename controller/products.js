@@ -8,7 +8,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Expose, Transform } from 'class-transformer';
-import { IsInt, IsString, Min, Max } from 'class-validator';
+import { IsInt, IsDecimal, IsString, Min, Max } from 'class-validator';
 export class Products {
     constructor(NAM, DESC, PRIC, STK, DIS_PER, CAT) {
         this.name = NAM;
@@ -26,7 +26,7 @@ __decorate([
         if (/^[a-z A-Z]+$/.test(value))
             return value;
         else
-            throw { status: 200, message: 'El nombre contiene caracteres erroneos' };
+            throw { status: 400, message: 'El nombre contiene caracteres erroneos' };
     }, { toClassOnly: true }),
     IsString(),
     __metadata("design:type", String)
@@ -37,7 +37,7 @@ __decorate([
         if (/^[a-z A-Z]+$/.test(value))
             return value;
         else
-            throw { status: 200, message: 'La descripcion contiene caracteres erroneos' };
+            throw { status: 400, message: 'La descripcion contiene caracteres erroneos' };
     }, { toClassOnly: true }),
     IsString(),
     __metadata("design:type", String)
@@ -45,12 +45,12 @@ __decorate([
 __decorate([
     Expose({ name: 'price' }),
     Transform(({ value }) => {
-        if (Math.floor(value) && typeof value == 'number')
-            return Math.floor(value);
+        if (typeof value === 'number')
+            return value;
         else
-            throw { status: 200, message: 'El precio contiene parametros incorrectos' };
+            throw { status: 400, message: 'El precio contiene parametros incorrectos' };
     }, { toClassOnly: true }),
-    IsInt({ message: "El precio debe ser decimal" }),
+    IsDecimal({ decimal_digits: '1, 2' }),
     __metadata("design:type", Number)
 ], Products.prototype, "price", void 0);
 __decorate([
@@ -59,9 +59,9 @@ __decorate([
         if (Math.floor(value) && typeof value == 'number')
             return Math.floor(value);
         else
-            throw { status: 200, message: 'El stock contiene parametros incorrectos' };
+            throw { status: 400, message: 'El stock contiene parametros incorrectos' };
     }, { toClassOnly: true }),
-    IsInt({ message: "El stock debe ser un numero" }),
+    IsInt(),
     __metadata("design:type", Number)
 ], Products.prototype, "stock", void 0);
 __decorate([
@@ -70,9 +70,9 @@ __decorate([
         if (Math.floor(value) && typeof value == 'number')
             return Math.floor(value);
         else
-            throw { status: 200, message: 'El porcentaje de descuento contiene parametros incorrectos' };
+            throw { status: 400, message: 'El porcentaje de descuento contiene parametros incorrectos' };
     }, { toClassOnly: true }),
-    IsInt({ message: "El stock debe ser un numero" }),
+    IsInt(),
     __metadata("design:type", Number)
 ], Products.prototype, "discount_percentage", void 0);
 __decorate([
@@ -81,7 +81,7 @@ __decorate([
         if (Math.floor(value) && typeof value == 'number')
             return Math.floor(value);
         else
-            throw { status: 200, message: 'La categoria contiene parametros incorrectos' };
+            throw { status: 400, message: 'La categoria contiene parametros incorrectos' };
     }, { toClassOnly: true }),
     IsInt(),
     Min(1, { message: 'La categoria debe ser mayor o igual que 1' }),

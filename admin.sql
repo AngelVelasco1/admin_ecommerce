@@ -19,7 +19,7 @@ CREATE TABLE products(
     FOREIGN KEY (category) REFERENCES categories(id),
     FOREIGN KEY (promotion_id) REFERENCES promotions(id)
 );
-ALTER TABLE products MODIFY COLUMN category INT;
+ALTER TABLE products MODIFY COLUMN category INT DEFAULT '1';
 
 CREATE TABLE purchases (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -45,6 +45,16 @@ CREATE TABLE categories (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL
 );
+INSERT INTO categories (id, name) VALUES (1, "Electronic");
+INSERT INTO categories (id, name) VALUES (2, "Clothes");
+INSERT INTO categories (id, name) VALUES (3, "Home");
+INSERT INTO categories (id, name) VALUES (4, "Beauty and Self care");
+INSERT INTO categories (id, name) VALUES (5, "Sports");
+INSERT INTO categories (id, name) VALUES (6, "Toys");
+INSERT INTO categories (id, name) VALUES (7, "Food");
+INSERT INTO categories (id, name) VALUES (8, "Entertaitment");
+INSERT INTO categories (id, name) VALUES (9, "Health");
+
 CREATE TABLE product_supplier (
     id INT PRIMARY KEY AUTO_INCREMENT,
     product_id BIGINT,
