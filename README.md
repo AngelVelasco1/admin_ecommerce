@@ -32,8 +32,7 @@ El proyecto  utilizará las siguientes tecnologías:
 - Framework de desarrollo web: [Express.js](https://expressjs.com/)
 
 ## Diagrama Base de Datos
-![image](https://github.com/AngelVelasco1/admin_ecommerce/assets/82744167/0811ec14-273b-4b73-9106-11197dbc06aa)
-
+![image](https://github.com/AngelVelasco1/admin_ecommerce/blob/main/diagrama.png)
 
 ## Configuración Basica
 
