@@ -2,7 +2,7 @@
 import { Router } from 'express';
 import dotenv from 'dotenv';
 import proxyProducts from '../middlewares/proxyProducts.js';
-import {conx} from '../middlewares/proxyProducts.js';
+import { conx } from '../middlewares/proxyProducts.js';
 //? Enviroment Variables
 dotenv.config("../");
 
@@ -26,12 +26,11 @@ storageProducts.post('/add', proxyProducts, (req, res) => {
                 console.error('Error de conexión:', err.message);
                 return res.status(500).send('Error interno del servidor');
             }
-    
+
             if (results.length > 0) return res.status(409).send('El producto ya existe');
-          
-            const action = 'INSERT INTO products (name, description, price, stock, discount_percentage) VALUES (?, ?, ?, ?, ?)';
-            const params = [name, description, price, stock, discount_percentage];
-            conx.query(action, params, (err) => {
+
+            const action = 'INSERT INTO products SET ?';
+            conx.query(action, productData, (err) => {
                 if (err) {
                     console.error('Error de conexión:', err.message);
                     return res.status(500).send('Error interno del servidor');
@@ -42,7 +41,7 @@ storageProducts.post('/add', proxyProducts, (req, res) => {
     } catch (err) {
         res.status(500).send('Error interno del servidor');
     }
-    
+
 })
 
 //? List Products Order alphabetically
@@ -71,7 +70,7 @@ storageProducts.get('/list', proxyProducts, (req, res) => {
 //? Update Products
 storageProducts.patch('/update/:id', proxyProducts, (req, res) => {
     const { id } = req.params;
-    const {name, description, price, stock, discount_percentage } = req.body;
+    const { name, description, price, stock, discount_percentage } = req.body;
     const productData = {
         name,
         description,
@@ -81,7 +80,7 @@ storageProducts.patch('/update/:id', proxyProducts, (req, res) => {
     };
     try {
         const action = 'UPDATE products SET ? WHERE id = ?';
-        conx.query(action, [productData, id], (err, result)  => {
+        conx.query(action, [productData, id], (err, result) => {
             if (err) {
                 console.error("Error de conexion:", err.message);
                 return res.status(500);
@@ -99,18 +98,30 @@ storageProducts.patch('/update/:id', proxyProducts, (req, res) => {
 
 //? Delete products
 storageProducts.delete('/delete/:id', proxyProducts, (req, res) => {
-    const  {id}  = req.params;
-    if (!id) return res.status(404).send("Not found");
+    const id = req.params.id;
     try {
-        const action = 'DELETE FROM products WHERE id = ?';
-        conx.query(action, id, (err, result)  => {
+        const checkProduct = 'SELECT id FROM products WHERE id = ?';
+        conx.query(checkProduct, id, (err, result) => {
             if (err) {
                 console.error("Error de conexion:", err.message);
                 return res.status(500);
-            } else {
-                return res.status(204).send(JSON.stringify(result));
+            }
+            if (result.length == 0) {
+                return res.status(404).send("Product not found");
+            }
+            else {
+                const action = 'DELETE FROM products WHERE id = ?';
+                conx.query(action, id, (err, result) => {
+                    if (err) {
+                        console.error("Error de conexion:", err.message);
+                        return res.status(500);
+                    } else {
+                        return res.status(204).send(JSON.stringify(result));
+                    }
+                })
             }
         })
+
 
     } catch (err) {
         res.status(500).send(err.message);
@@ -118,8 +129,23 @@ storageProducts.delete('/delete/:id', proxyProducts, (req, res) => {
     }
 })
 //? List products related to specific category
-storageProducts.get('/category/:category', proxyProducts, (req, res )=> {
+storageProducts.get('/category/:category', proxyProducts, (req, res) => {
+    const categoryId = req.params.category;
+    try {
+        const action = 'SELECT * FROM products WHERE category = ?';
+        conx.query(action, [categoryId], (err, result) => {
+            if (err) {
+                console.error("Error de conexion:", err.message);
+                return res.status(500);
+            } else {
+                return res.status(201).send(JSON.stringify(result));
+            }
+        })  
 
+    } catch (err) {
+        res.status(500).send(err.message);
+
+    }
 })
 
 
