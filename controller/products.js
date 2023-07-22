@@ -26,7 +26,7 @@ __decorate([
         if (/^[a-z A-Z]+$/.test(value))
             return value;
         else
-            throw { status: 400, message: 'El nombre contiene caracteres erroneos' };
+            throw { status: 200, message: 'El nombre contiene caracteres erroneos' };
     }, { toClassOnly: true }),
     IsString(),
     __metadata("design:type", String)
@@ -37,7 +37,7 @@ __decorate([
         if (/^[a-z A-Z]+$/.test(value))
             return value;
         else
-            throw { status: 400, message: 'La descripcion contiene caracteres erroneos' };
+            throw { status: 200, message: 'La descripcion contiene caracteres erroneos' };
     }, { toClassOnly: true }),
     IsString(),
     __metadata("design:type", String)
@@ -48,7 +48,7 @@ __decorate([
         if (typeof value === 'number')
             return value;
         else
-            throw { status: 400, message: 'El precio contiene parametros incorrectos' };
+            throw { status: 200, message: 'El precio contiene parametros incorrectos' };
     }, { toClassOnly: true }),
     IsDecimal({ decimal_digits: '1, 2' }),
     __metadata("design:type", Number)
@@ -59,7 +59,7 @@ __decorate([
         if (Math.floor(value) && typeof value == 'number')
             return Math.floor(value);
         else
-            throw { status: 400, message: 'El stock contiene parametros incorrectos' };
+            throw { status: 200, message: 'El stock contiene parametros incorrectos' };
     }, { toClassOnly: true }),
     IsInt(),
     __metadata("design:type", Number)
@@ -70,7 +70,7 @@ __decorate([
         if (Math.floor(value) && typeof value == 'number')
             return Math.floor(value);
         else
-            throw { status: 400, message: 'El porcentaje de descuento contiene parametros incorrectos' };
+            throw { status: 200, message: 'El porcentaje de descuento contiene parametros incorrectos' };
     }, { toClassOnly: true }),
     IsInt(),
     __metadata("design:type", Number)
@@ -81,7 +81,7 @@ __decorate([
         if (Math.floor(value) && typeof value == 'number')
             return Math.floor(value);
         else
-            throw { status: 400, message: 'La categoria contiene parametros incorrectos' };
+            throw { status: 200, message: 'La categoria contiene parametros incorrectos' };
     }, { toClassOnly: true }),
     IsInt(),
     Min(1, { message: 'La categoria debe ser mayor o igual que 1' }),

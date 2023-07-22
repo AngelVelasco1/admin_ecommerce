@@ -18,22 +18,31 @@ storageProducts.post('/add', proxyProducts, (req, res) => {
         stock,
         discount_percentage
     };
-    try {
-        const action = `INSERT INTO products SET ?`;
-         conx.query(
-            action, productData, (err) => {
-                if (err) {
-                    console.error("Error de conexion:", err.message);
-                    return res.status(500);
-                }
 
-                else {
-                    return res.status(201).send(JSON.stringify(productData));
+    try {
+        const checkName = 'SELECT id FROM products WHERE name = ?';
+        conx.query(checkName, [name], (err, results) => {
+            if (err) {
+                console.error('Error de conexión:', err.message);
+                return res.status(500).send('Error interno del servidor');
+            }
+    
+            if (results.length > 0) return res.status(409).send('El producto ya existe');
+          
+            const action = 'INSERT INTO products (name, description, price, stock, discount_percentage) VALUES (?, ?, ?, ?, ?)';
+            const params = [name, description, price, stock, discount_percentage];
+            conx.query(action, params, (err) => {
+                if (err) {
+                    console.error('Error de conexión:', err.message);
+                    return res.status(500).send('Error interno del servidor');
                 }
+                return res.status(201).send(productData);
             });
+        });
     } catch (err) {
-        res.status(500).send(err.message);
+        res.status(500).send('Error interno del servidor');
     }
+    
 })
 
 //? List Products Order alphabetically
@@ -108,10 +117,10 @@ storageProducts.delete('/delete/:id', proxyProducts, (req, res) => {
 
     }
 })
-
-
 //? List products related to specific category
+storageProducts.get('/category/:category', proxyProducts, (req, res )=> {
 
+})
 
 
 export default storageProducts;
