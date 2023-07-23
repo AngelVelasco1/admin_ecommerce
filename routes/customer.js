@@ -70,8 +70,24 @@ storageCustomer.get('/login', proxyCustomer, registerAuth, async(req, res) => {
 })
 
 //? Delete account by id
-storageCustomer.delete('/delete', proxyCustomer, (req, res) => {
+storageCustomer.delete('/delete/:id', proxyCustomer, async(req, res) => {
+    const {id} = req.params;
 
+    try {
+        const checkCustomer = 'SELECT id FROM customer WHERE id = ?';
+        const [customerResult] = await conx.query(checkCustomer, [id]);
+        if(customerResult.length === 0) {
+            return res.status(404).send("Not user found")
+        } 
+        
+        const action = 'DELETE FROM customer WHERE id = ?';
+        await conx.query(action, id);
+
+        return res.send("Usuario eliminado")
+    } catch(err) {
+        console.error('Error de conexion:', err.message);
+        res.sendStatus(500);
+    }
 })
 
 export default storageCustomer;
