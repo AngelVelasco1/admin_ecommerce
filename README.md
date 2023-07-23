@@ -1,6 +1,6 @@
 # Administración de E-commerce
 
-Este proyecto tiene como objetivo desarrollar un sistema de administración para un e-commerce. El sistema permitirá gestionar proveedores, productos, promociones y otras entidades importantes para el funcionamiento del e-commerce.
+Este proyecto tiene como objetivo desarrollar un sistema de administración para un e-commerce. El sistema permitirá gestionar proveedores, productos, clientes y otros temas importantes.
 
 ## Funcionalidades principales
 
