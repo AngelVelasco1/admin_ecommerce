@@ -155,6 +155,32 @@ storageCustomer.post('/:id/buy/:productId', proxyCustomer, async (req, res) => {
     }
 });
 
+storageCustomer.get('/purchases/:id', proxyCustomer, async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const checkCustomer = 'SELECT id FROM customer WHERE id = ?';
+        const [customerResult] = await conx.query(checkCustomer, [id]);
+        if (customerResult.length === 0) {
+            return res.status(404).send("Cliente no encontrado");
+        }
+
+        // Obtener las compras del cliente
+        const getCustomerPurchases = 'SELECT p.product_id, pr.name as product_name, pr.price as product_price FROM purchases p INNER JOIN products pr ON p.product_id = pr.id WHERE customer_id = ?';
+        const [purchases] = await conx.query(getCustomerPurchases, [id]);
+
+        if(purchases.length === 0) return res.status(200).send("El usuario no tiene compras")
+
+        const customerData = {
+            purchases: purchases
+        };
+
+        return res.status(200).json(customerData);
+    } catch (err) {
+        console.error('Error de conexión:', err.message);
+        res.sendStatus(500);
+    }
+});
 
 export default storageCustomer;
 
