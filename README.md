@@ -137,7 +137,8 @@ Si es exitoso, recibirás una respuesta con el código de estado `201 Created` y
 
 - Si no se encuentra un usuario con los datos proporcionados, recibirás una respuesta con el código de estado `404 Not Found`, indicando que el usuario no ha sido encontrado.
 
-
+#### NOTA
+Todas las consultas deben poseer en su body las columnas referentes al enpoint, con valores logicos en cada campo para que la validacion sea correcta. De lo contrario el DTO no validara los campos como correctos.
 
 ## Autor
 
