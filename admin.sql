@@ -78,6 +78,3 @@ INSERT INTO categories (id, name) VALUES (9, "Health");
 
 INSERT INTO role (id, name) VALUES (1, "supplier");
 INSERT INTO role (id, name) VALUES (2, "customer");
-
-ALTER TABLE suppliers MODIFY COLUMN email VARCHAR(255) NOT NULL UNIQUE;
-ALTER TABLE suppliers MODIFY COLUMN phone VARCHAR(50) NOT NULL UNIQUE;

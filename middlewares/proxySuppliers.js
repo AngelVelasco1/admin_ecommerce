@@ -1,6 +1,6 @@
 //? Dependecies
 import express from 'express';
-import mysql from 'mysql2';
+import mysql from 'mysql2/promise';
 import { plainToClass } from 'class-transformer';
 import { Suppliers } from '../controller/suppliers.js';
 

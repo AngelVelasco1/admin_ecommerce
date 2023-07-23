@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import proxySuppliers from '../middlewares/proxySuppliers.js';
 import { conx } from '../middlewares/proxySuppliers.js';
 
+
 //? Enviroment Variables
 dotenv.config("../");
 
@@ -59,7 +60,8 @@ storageSuppliers.delete('/delete/:id', proxySuppliers, (req, res) => {
 
             if (result.length == 0) {
                 return res.status(409).send("El proveedor no existe")
-            } else {
+            } 
+            else {
                 const action = 'DELETE FROM suppliers WHERE id = ?';
                 conx.query(action, id, (err, result) => {
                     if (err) {
@@ -117,9 +119,40 @@ storageSuppliers.get('/list', proxySuppliers, (req, res) => {
             });
 
     } catch (err) {
-
         res.status(500).json({ error: 'Error del servidor' });
-
     }
+});
+//? Relation to specific product
+storageSuppliers.post('/link/:supplierId/:productId', proxySuppliers, async (req, res) => {
+    const { supplierId, productId} = req.params;
+
+    try {
+        const checkSupplier = 'SELECT * FROM suppliers WHERE id = ?';
+        const checkProduct = 'SELECT * FROM products WHERE id = ?';
+        const checkRelation = 'SELECT * FROM product_supplier WHERE supplier_id = ? AND product_id = ?';
+      
+        const [supplierResult] = await conx.query(checkSupplier, [supplierId]);
+        if (supplierResult.length === 0) {
+          return res.status(409).send("El proveedor no existe");
+        }
+      
+        const [productResult] = await conx.query(checkProduct, [productId]);
+        if (productResult.length === 0) {
+          return res.status(409).send("El producto no existe");
+        }
+      
+        const [relationResult] = await conx.query(checkRelation, [supplierId, productId]);
+        if (relationResult.length > 0) {
+          return res.status(409).send("La relación entre el proveedor y el producto ya existe");
+        }
+      
+        const action = 'INSERT INTO product_supplier (supplier_id, product_id) VALUES (?, ?)';
+        await conx.query(action, [supplierId, productId]);
+      
+        return res.status(204).send("Proveedor asociado");  
+      } catch (err) {
+        console.error('Error de conexión:', err.message);
+        return res.status(500).send('Error interno del servidor');
+      }
 })
 export default storageSuppliers;
