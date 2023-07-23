@@ -39,7 +39,6 @@ storageCustomer.post('/create', proxyCustomer, async (req, res) => {
             .setExpirationTime("30m")
             .sign(encoder.encode(process.env.PRIVATE_KEY))
 
-        // Enviar el token en la respuesta
         return res.status(201).json({ userData, jwt });
     } catch (err) {
         console.error('Error de conexion:', err.message);

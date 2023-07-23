@@ -10,9 +10,9 @@ CREATE TABLE products(
     discount_percentage TINYINT(2) NOT NULL DEFAULT '0',
     category INT NOT NULL,
     promotion_id INT,
-    FOREIGN KEY (category) REFERENCES categories(id),
     FOREIGN KEY (promotion_id) REFERENCES promotions(id)
 );
+ALTER TABLE products DROP FOREIGN KEY products_ibfk_2;
 CREATE TABLE customer (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL,
@@ -78,3 +78,5 @@ INSERT INTO categories (id, name) VALUES (9, "Health");
 
 INSERT INTO role (id, name) VALUES (1, "supplier");
 INSERT INTO role (id, name) VALUES (2, "customer");
+
+DROP TABLE promotions;
