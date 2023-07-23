@@ -155,6 +155,7 @@ storageCustomer.post('/:id/buy/:productId', proxyCustomer, async (req, res) => {
     }
 });
 
+//? List Purchases
 storageCustomer.get('/purchases/:id', proxyCustomer, async (req, res) => {
     const { id } = req.params;
 

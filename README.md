@@ -16,9 +16,11 @@ El sistema de administración del e-commerce contendrá las siguientes funcional
    - Registro de información detallada sobre los productos, como nombre, descripción, precio, cantidad en stock, etc.
    - Categorización de productos para facilitar su búsqueda y organización.
 
-**3. Gestión de Usuarios:**
-   - Creación, modificación y eliminación de usuarios.
-   - Autenticacion con JWT y Cookies
+**3. Gestión de clientes:**
+   - Creación, modificación y eliminación de clientes.
+   - Login con Autenticacion con JWT 
+   - Compra de productos
+   - Listado de compras de un cliente especifico
      
 ## Tecnologías utilizadas
 
