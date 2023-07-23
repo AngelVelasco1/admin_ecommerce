@@ -14,13 +14,11 @@ El sistema de administración del e-commerce contendrá las siguientes funcional
 2. Gestión de Productos:
    - Alta, baja y modificación de productos.
    - Registro de información detallada sobre los productos, como nombre, descripción, precio, cantidad en stock, etc.
-   - Asociación de productos a proveedores específicos.
    - Categorización de productos para facilitar su búsqueda y organización.
 
-3. Gestión de Promociones:
-   - Creación, modificación y eliminación de promociones.
-   - Asignación de descuentos o promociones especiales a productos específicos.
-   - Configuración de fechas de inicio y fin de las promociones.
+3. Gestión de Usuarios:
+   - Creación, modificación y eliminación de usuarios.
+   - Autenticacion con JWT y Cookies
      
 ## Tecnologías utilizadas
 
