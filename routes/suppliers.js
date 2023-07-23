@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import proxySuppliers from '../middlewares/proxySuppliers.js';
 import { conx } from '../middlewares/proxySuppliers.js';
 
-
 //? Enviroment Variables
 dotenv.config("../");
 
@@ -44,8 +43,7 @@ storageSuppliers.post('/add', proxySuppliers, (req, res) => {
     catch (err) {
         res.status(500).send(err.message);
     }
-})
-
+});
 //? Delete Suppliers
 storageSuppliers.delete('/delete/:id', proxySuppliers, (req, res) => {
     const id = req.params.id;
@@ -77,7 +75,7 @@ storageSuppliers.delete('/delete/:id', proxySuppliers, (req, res) => {
     catch (err) {
         res.status(500).send(err.message);
     }
-})
+});
 //? Update
 storageSuppliers.patch('/update/:id', proxySuppliers, (req, res) => {
     const  id  = req.params.id;
@@ -103,7 +101,7 @@ storageSuppliers.patch('/update/:id', proxySuppliers, (req, res) => {
         res.status(500).send(err.message);
 
     }
-})
+});
 //? List suppliers
 storageSuppliers.get('/list', proxySuppliers, (req, res) => {
     try {
@@ -154,5 +152,6 @@ storageSuppliers.post('/link/:supplierId/:productId', proxySuppliers, async (req
         console.error('Error de conexión:', err.message);
         return res.status(500).send('Error interno del servidor');
       }
-})
+});
+
 export default storageSuppliers;
