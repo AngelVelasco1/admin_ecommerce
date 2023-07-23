@@ -80,7 +80,7 @@ storageProducts.patch('/update/:id', proxyProducts, (req, res) => {
     };
     try {
         const action = 'UPDATE products SET ? WHERE id = ?';
-        conx.query(action, [productData, id], (err, result) => {
+        conx.query(action, [productData, id], (err) => {
             if (err) {
                 console.error("Error de conexion:", err.message);
                 return res.status(500);
@@ -89,10 +89,8 @@ storageProducts.patch('/update/:id', proxyProducts, (req, res) => {
             }
         })
 
-
     } catch (err) {
         res.status(500).send(err.message);
-
     }
 })
 
@@ -121,6 +119,8 @@ storageProducts.delete('/delete/:id', proxyProducts, (req, res) => {
                 })
             }
         })
+
+
     } catch (err) {
         res.status(500).send(err.message);
 

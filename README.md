@@ -34,7 +34,6 @@ El proyecto  utilizará las siguientes tecnologías:
 
 ## Configuración Basica
 
-...
 
 ## Autor
 
