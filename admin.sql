@@ -36,23 +36,11 @@ CREATE TABLE purchases (
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
-CREATE TABLE promotions (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(200) NOT NULL,
-    start_date DATETIME NOT NULL,
-    end_date DATETIME NOT NULL
-);
-
 CREATE TABLE categories (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL
 );
 
-CREATE TABLE user_info (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    phone VARCHAR(20) NOT NULL
-);
 CREATE TABLE role (
     id INT PRIMARY KEY,
     name VARCHAR(100) NOT NULL
@@ -78,5 +66,3 @@ INSERT INTO categories (id, name) VALUES (9, "Health");
 
 INSERT INTO role (id, name) VALUES (1, "supplier");
 INSERT INTO role (id, name) VALUES (2, "customer");
-
-DROP TABLE promotions;

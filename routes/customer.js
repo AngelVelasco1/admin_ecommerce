@@ -117,5 +117,44 @@ storageCustomer.patch('/update/:id', proxyCustomer, async(req, res) => {
     }
 })
 
+//? Buy a products
+storageCustomer.post('/:id/buy/:productId', proxyCustomer, async (req, res) => {
+    const customerId = req.params.id;
+    const productId = req.params.productId;
+
+    try {
+        const checkCustomer = 'SELECT id FROM customer WHERE id = ?';
+        const [customerResult] = await conx.query(checkCustomer, [customerId]);
+
+        if (customerResult.length === 0) {
+            return res.status(404).send("Cliente no encontrado");
+        }
+
+        const checkProduct = 'SELECT id, price, stock FROM products WHERE id = ?';
+        const [productResult] = await conx.query(checkProduct, [productId]);
+
+        if (productResult.length === 0) {
+            return res.status(404).send("Producto no encontrado");
+        }
+
+        const productStock = productResult[0].stock;
+        if (productStock === 0) {
+            return res.status(400).send("Producto agotado");
+        }
+
+        const createPurchase = 'INSERT INTO purchases (customer_id, product_id) VALUES (?, ?)';
+        await conx.query(createPurchase, [customerId, productId]);
+
+        const updateStock = 'UPDATE products SET stock = ? WHERE id = ?';
+        await conx.query(updateStock, [productStock - 1, productId]);
+
+        return res.status(201).send("Compra exitosa");
+    } catch (err) {
+        console.error('Error de conexión:', err.message);
+        res.sendStatus(500);
+    }
+});
+
+
 export default storageCustomer;
 
