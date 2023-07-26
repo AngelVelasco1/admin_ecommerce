@@ -1,8 +1,8 @@
 //? Dependencies
 import { Router } from 'express';
 import dotenv from 'dotenv';
-import registerAuth from '../auth/customerAuth.js';
 import proxyCustomer from '../middlewares/proxyCustomer.js';
+import auth from '../auth/customerAuth.js'
 import { SignJWT } from 'jose';
 import { conx } from '../middlewares/proxyCustomer.js';
 
@@ -47,7 +47,7 @@ storageCustomer.post('/create', proxyCustomer, async (req, res) => {
 })
 
 //? Login with jwt
-storageCustomer.get('/login', proxyCustomer, registerAuth, async (req, res) => {
+storageCustomer.get('/login',  proxyCustomer, auth, async (req, res) => {
     const { name, email } = req.body;
     const userData = {
         name,
@@ -68,7 +68,7 @@ storageCustomer.get('/login', proxyCustomer, registerAuth, async (req, res) => {
 })
 
 //? Delete account by id
-storageCustomer.delete('/delete/:id', proxyCustomer, async (req, res) => {
+storageCustomer.delete('/delete/:id', proxyCustomer, auth, async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -89,7 +89,7 @@ storageCustomer.delete('/delete/:id', proxyCustomer, async (req, res) => {
 })
 
 //? Update account by id
-storageCustomer.patch('/update/:id', proxyCustomer, async(req, res) => {
+storageCustomer.patch('/update/:id', proxyCustomer, auth, async(req, res) => {
     const { id } = req.params;
     const { name, address, email } = req.body;
 
@@ -118,7 +118,7 @@ storageCustomer.patch('/update/:id', proxyCustomer, async(req, res) => {
 })
 
 //? Buy a products
-storageCustomer.post('/:id/buy/:productId', proxyCustomer, async (req, res) => {
+storageCustomer.post('/:id/buy/:productId', proxyCustomer, auth, async (req, res) => {
     const customerId = req.params.id;
     const productId = req.params.productId;
 
@@ -156,7 +156,7 @@ storageCustomer.post('/:id/buy/:productId', proxyCustomer, async (req, res) => {
 });
 
 //? List Purchases
-storageCustomer.get('/purchases/:id', proxyCustomer, async (req, res) => {
+storageCustomer.get('/purchases/:id', proxyCustomer, auth, async (req, res) => {
     const { id } = req.params;
 
     try {

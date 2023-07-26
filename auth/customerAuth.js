@@ -5,9 +5,9 @@ import dotenv from 'dotenv';
 
 dotenv.config("../");
 
-let registerAuth = express();
+let auth = express();
 
-registerAuth.use(async(req, res, next ) => {
+auth.use(async(req, res, next ) => {
     const token = req.headers.authorization;
 
     if(!token) return res.status(401).send('Not token found');
@@ -22,4 +22,4 @@ registerAuth.use(async(req, res, next ) => {
         return res.status(401).send('Token inválido');
     }
 })
-export default registerAuth;
+export default auth;

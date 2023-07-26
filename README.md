@@ -63,13 +63,17 @@ El proyecto utiliza variables de entorno para la configuración de la conexión 
 
 ### ENV
 
+- Debes crear un archivo .env con la misma estructura que tiene el archivo .env.example. Reemplaza los valores por:
+CONFIG = {"hostname": "localhost", "port": 5050}
+CONNECT = {"host": "localhost", "user": "campus", "database": "adminEcommerce", "password": "campus2023", "port": 3306}
+PRIVATE_KEY = "admin"
+
+
 La variable de entorno `CONFIG` define la configuración del servidor de la base de datos. Debes proporcionar el hostname y el puerto de conexión. 
 
 ```
 CONFIG = {"hostname": "localhost", "port": 5050}
 ```
-
-
 
 La variable de entorno `CONNECT` define los parámetros de conexión a la base de datos, como el host, usuario, contraseña, base de datos y puerto.
 
@@ -93,6 +97,22 @@ El proyecto utiliza las siguientes dependencias:
 - reflect-metadata (v0.1.13)
 - typescript (v5.1.6)
 
+## Uso y creacion de la base de datos
+
+### Pasos de creacion
+
+1. Crea la base de datos con CREATE.
+2. Usa la base de datos 'USE database'
+3. Crea la tabla categories (CREATE categories)
+4. Crea la tabla role (CREATE role)
+5. Crea la tabla products (CREATE products)
+6. Crea la tabla customer (CREATE customer)
+7. Crea la tabla suppliers (CREATE suppliers)
+8. Crea la tabla purchases (CREATE purchases)
+9. Crea la tabla product_supplier (CREATE product_supplier)
+10. Inserta todos los datos de la tabla categories (INSER INTO categories)
+
+
 
 ##  Consultas Principales
 
@@ -108,11 +128,11 @@ El proyecto utiliza las siguientes dependencias:
    {
      "name": "John Doe",
      "address": "123 Main St",
-     "email": "john.doe@example.com"
+     "email": "johndoe@example.com"
    }
    ```
 
-Si es exitoso, recibirás una respuesta con el código de estado `201 Created` y los datos del cliente creado junto con el token JWT.
+Si es exitoso, recibirás una respuesta con el código de estado `201 Created` y los datos del cliente creado junto con el token JWT. Guarda este token, te permitira iniciar sesion Y realizar las demas consultas para customer
 
 
 ###  Iniciar Sesión del Customer
@@ -120,9 +140,9 @@ Si es exitoso, recibirás una respuesta con el código de estado `201 Created` y
 - **URL:** (`http://${CONNECT}/customer/login`) 
 
 
-1. Copia la URL(`http://${CONNECT}/customer/login`)
+1. Usa la URL(`http://${CONNECT}/customer/login`), cambia por la variable CONNECT
 2. Crea una nueva solicitud GET.
-3. Agrega el encabezado `Content-Type: application/json`.
+3. Agrega en el header tipo Authorization Y el valor del token generado en el registro
 4. Ingresa el cuerpo de la solicitud JSON:
    ```json
    {
@@ -134,6 +154,8 @@ Si es exitoso, recibirás una respuesta con el código de estado `201 Created` y
 - El endpoint implementa un middleware que realiza la verificacion del JWT
 
 - Si los datos de inicio de sesión son correctos, recibirás una respuesta con el código de estado `200 OK`, indicando que el usuario ha sido encontrado y autenticado correctamente.
+
+- Si el token no es valido mostrara Not token found y no permitira hacer ninguna accion (Listar productoss, comprar, actualizar, etc)
 
 - Si falta alguno de los campos requeridos (nombre o email), recibirás una respuesta con el código de estado `404 Not Found`, indicando que debes enviar los datos requeridos.
 

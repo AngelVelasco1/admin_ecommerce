@@ -1,32 +1,33 @@
--- Active: 1689861893713@@127.0.0.1@3306@adminecommerce
-CREATE DATABASE adminecommerce;
-USE adminecommerce;
-CREATE TABLE products(
+-- Active: 1689076122584@@localhost@3306@admin
+CREATE DATABASE admin;
+USE admin;
+CREATE TABLE products (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL,
     description VARCHAR(255) NOT NULL,
     price DECIMAL(12, 2) NOT NULL,
     stock INT NOT NULL,
     discount_percentage TINYINT(2) NOT NULL DEFAULT '0',
-    category INT NOT NULL,
-    promotion_id INT,
-    FOREIGN KEY (promotion_id) REFERENCES promotions(id)
+    category INT NOT NULL
+    FOREIGN KEY (category) REFERENCES categories (id)
 );
-ALTER TABLE products DROP FOREIGN KEY products_ibfk_2;
 CREATE TABLE customer (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL,
     address VARCHAR(50),
+    email VARCHAR(255)
     role_id INT, 
-    user_info INT,
-    FOREIGN KEY (role_id) REFERENCES role (id),
+    FOREIGN KEY (role_id) REFERENCES role (id)
 );
+ALTER TABLE customer ADD COLUMN  email VARCHAR(255);
+
 CREATE TABLE suppliers (
     id INT PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
     email VARCHAR(255),
     phone VARCHAR(50),
-    FOREIGN KEY (role_id) REFERENCES role(id)
+    role_id INT,
+     FOREIGN KEY (role_id) REFERENCES role(id)
 );
 CREATE TABLE purchases (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -39,7 +40,8 @@ CREATE TABLE purchases (
 CREATE TABLE categories (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL
-);
+);    
+
 
 CREATE TABLE role (
     id INT PRIMARY KEY,
@@ -51,7 +53,7 @@ CREATE TABLE product_supplier (
     supplier_id INT,
     FOREIGN KEY (product_id) REFERENCES products(id),
     FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
-);
+); 
 
 
 INSERT INTO categories (id, name) VALUES (1, "Electronic");
