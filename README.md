@@ -100,7 +100,7 @@ A continuación, se presentan los pasos para crear la base de datos y configurar
 1. Ejecuta el siguiente comando para crear la base de datos:
 
 ```sql
-CREATE DATABASE adminEcommerce;
+CREATE DATABASE admin;
 ```
 
 ### 2. Seleccionar la base de datos
@@ -108,7 +108,7 @@ CREATE DATABASE adminEcommerce;
 Antes de crear las tablas, asegúrate de estar utilizando la base de datos que acabas de crear. Puedes hacerlo con el comando:
 
 ```sql
-USE adminEcommerce;
+USE admin;
 ```
 
 #### 3. Crear la tabla 'categories'
