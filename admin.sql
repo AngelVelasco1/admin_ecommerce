@@ -1,6 +1,15 @@
--- Active: 1689076122584@@localhost@3306@admin
+-- Active: 1690402556175@@127.0.0.1@3306@adminn
 CREATE DATABASE admin;
 USE admin;
+
+CREATE TABLE categories (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(200) NOT NULL
+); 
+CREATE TABLE role (
+    id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
 CREATE TABLE products (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL,
@@ -8,26 +17,24 @@ CREATE TABLE products (
     price DECIMAL(12, 2) NOT NULL,
     stock INT NOT NULL,
     discount_percentage TINYINT(2) NOT NULL DEFAULT '0',
-    category INT NOT NULL
+    category INT NOT NULL,
     FOREIGN KEY (category) REFERENCES categories (id)
 );
 CREATE TABLE customer (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL,
     address VARCHAR(50),
-    email VARCHAR(255)
-    role_id INT, 
+    email VARCHAR(255),
+    role_id INT NOT NULL, 
     FOREIGN KEY (role_id) REFERENCES role (id)
 );
-ALTER TABLE customer ADD COLUMN  email VARCHAR(255);
-
 CREATE TABLE suppliers (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL,
     email VARCHAR(255),
     phone VARCHAR(50),
     role_id INT,
-     FOREIGN KEY (role_id) REFERENCES role(id)
+    FOREIGN KEY (role_id) REFERENCES role(id)
 );
 CREATE TABLE purchases (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -35,17 +42,6 @@ CREATE TABLE purchases (
     product_id BIGINT,
     FOREIGN KEY (customer_id) REFERENCES customer(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
-);
-
-CREATE TABLE categories (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(200) NOT NULL
-);    
-
-
-CREATE TABLE role (
-    id INT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
 );
 CREATE TABLE product_supplier (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -55,7 +51,7 @@ CREATE TABLE product_supplier (
     FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
 ); 
 
-
+/* Content */
 INSERT INTO categories (id, name) VALUES (1, "Electronic");
 INSERT INTO categories (id, name) VALUES (2, "Clothes");
 INSERT INTO categories (id, name) VALUES (3, "Home");

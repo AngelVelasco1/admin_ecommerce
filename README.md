@@ -29,7 +29,7 @@ El proyecto  utilizará las siguientes tecnologías:
 - Lenguaje de programación: [JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript)
 - Framework Backend: [Node.js](https://nodejs.org/)
 - Base de datos: [MySQL](https://www.mysql.com/)
-- Framework de desarrollo web: [Express.js](https://expressjs.com/)
+- Framework: [Express.js](https://expressjs.com/)
 
 ## Diagrama Base de Datos
 ![image](https://github.com/AngelVelasco1/admin_ecommerce/blob/main/diagrama.png)
@@ -53,32 +53,26 @@ El proyecto  utilizará las siguientes tecnologías:
 3. Instala las dependencias del proyecto:
 
    ```shell
-   npm install -E -D
+   npm i -E
    ```
 4. Inicia el servidor mediante el comando `npm run dev`.
 
 
 
-El proyecto utiliza variables de entorno para la configuración de la conexión a la base de datos.
-
 ### ENV
 
-- Debes crear un archivo .env con la misma estructura que tiene el archivo .env.example. Reemplaza los valores por:
-CONFIG = {"hostname": "localhost", "port": 5050}
-CONNECT = {"host": "localhost", "user": "campus", "database": "adminEcommerce", "password": "campus2023", "port": 3306}
-PRIVATE_KEY = "admin"
+Antes de ejecutar la aplicación, asegúrate de crear y configurar el archivo de entorno (`.env`) con la siguiente estructura y reemplazar los valores por los adecuados:
 
+```plaintext
 
-La variable de entorno `CONFIG` define la configuración del servidor de la base de datos. Debes proporcionar el hostname y el puerto de conexión. 
+# Configuración general
+CONFIG={"hostname": "localhost", "port": 5050}
 
-```
-CONFIG = {"hostname": "localhost", "port": 5050}
-```
+# Conexión a la base de datos
+CONNECT={"host": "localhost", "user": "username", "database": "database", "password": ".....", "port": 3306}
 
-La variable de entorno `CONNECT` define los parámetros de conexión a la base de datos, como el host, usuario, contraseña, base de datos y puerto.
-
-```
-CONNECT = {"host": "localhost", "user": "user", "database": "database", "password": "....", "port": 3306}
+# Clave privada para JWT
+PRIVATE_KEY="admin"
 ```
 
 ### Dependencias
@@ -88,8 +82,6 @@ El proyecto utiliza las siguientes dependencias:
 - dotenv (v16.3.1)
 - express (v4.18.2)
 - jose (v4.14.4)
-
-***
 - class-transformer (v0.5.1)
 - class-validator (v0.14.0)
 - mysql2 (v3.5.2)
@@ -97,72 +89,257 @@ El proyecto utiliza las siguientes dependencias:
 - reflect-metadata (v0.1.13)
 - typescript (v5.1.6)
 
-## Uso y creacion de la base de datos
 
-### Pasos de creacion
+## Pasos para crear y configurar la base de datos
 
-1. Crea la base de datos con CREATE.
-2. Usa la base de datos 'USE database'
-3. Crea la tabla categories (CREATE categories)
-4. Crea la tabla role (CREATE role)
-5. Crea la tabla products (CREATE products)
-6. Crea la tabla customer (CREATE customer)
-7. Crea la tabla suppliers (CREATE suppliers)
-8. Crea la tabla purchases (CREATE purchases)
-9. Crea la tabla product_supplier (CREATE product_supplier)
-10. Inserta todos los datos de la tabla categories (INSER INTO categories)
+A continuación, se presentan los pasos para crear la base de datos y configurar las tablas requeridas. Asegúrate de tener instalado MySQL en tu sistema antes de seguir estos pasos.
+
+### 1. Crear la base de datos
 
 
+1. Ejecuta el siguiente comando para crear la base de datos:
 
-##  Consultas Principales
+```sql
+CREATE DATABASE adminEcommerce;
+```
 
-### Crear un Nuevo Cliente
+### 2. Seleccionar la base de datos
 
-- **URL:** `http://${CONNECT}/customer/create`
+Antes de crear las tablas, asegúrate de estar utilizando la base de datos que acabas de crear. Puedes hacerlo con el comando:
 
-1. Copia la URL (`http://${CONNECT}/customer/create`) 
-2. Crea una nueva solicitud POST.
-3. Agrega el encabezado `Content-Type: application/json`.
-4. Ingresa el cuerpo de la solicitud JSON:
-   ```json
-   {
-     "name": "John Doe",
-     "address": "123 Main St",
-     "email": "johndoe@example.com"
-   }
-   ```
+```sql
+USE adminEcommerce;
+```
 
-Si es exitoso, recibirás una respuesta con el código de estado `201 Created` y los datos del cliente creado junto con el token JWT. Guarda este token, te permitira iniciar sesion Y realizar las demas consultas para customer
+#### 3. Crear la tabla 'categories'
+
+```sql
+CREATE TABLE categories (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(200) NOT NULL
+); 
+```
+
+#### 4. Crear la tabla 'role'
+
+```sql
+CREATE TABLE role (
+    id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+```
+
+#### 5. Crear la tabla 'products'
+
+```sql
+CREATE TABLE products (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(200) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    price DECIMAL(12, 2) NOT NULL,
+    stock INT NOT NULL,
+    discount_percentage TINYINT(2) NOT NULL DEFAULT '0',
+    category INT NOT NULL,
+    FOREIGN KEY (category) REFERENCES categories (id)
+);
+```
+
+#### 6. Crear la tabla 'customer'
+
+```sql
+CREATE TABLE customer (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(200) NOT NULL,
+    address VARCHAR(50),
+    email VARCHAR(255),
+    role_id INT NOT NULL, 
+    FOREIGN KEY (role_id) REFERENCES role (id)
+);
+```
+
+#### 7. Crear la tabla 'suppliers'
+
+```sql
+CREATE TABLE suppliers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(200) NOT NULL,
+    email VARCHAR(255),
+    phone VARCHAR(50),
+    role_id INT,
+     FOREIGN KEY (role_id) REFERENCES role(id)
+);
+```
+
+#### 8. Crear la tabla 'purchases'
+
+```sql
+CREATE TABLE purchases (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    customer_id BIGINT,
+    product_id BIGINT,
+    FOREIGN KEY (customer_id) REFERENCES customer(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+```
+
+#### 9. Crear la tabla 'product_supplier'
+
+```sql
+CREATE TABLE product_supplier (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    product_id BIGINT,
+    supplier_id INT,
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
+); 
+```
 
 
-###  Iniciar Sesión del Customer
+## Endpoints
 
-- **URL:** (`http://${CONNECT}/customer/login`) 
+> ⚠️ **Importante:**
+> Las consultas deben poseer en su body columnas referentes al endpoint, con valores logicos en cada campo para que la validacion del DTO sea correcta. (Puedes copiar los valores json dados como ejemplo).
+
+### 1. Customer
+
+### `create`
+
+Este endpoint se utiliza para crear un nuevo cliente en la base de datos y generar un JWT para autenticación.
+
+- Método: **POST**
+- URL: `http://localhost:5050/customer/create`
+- Cuerpo de la solicitud
+  ```json
+  {
+    "name": "Angel Doe",
+    "address": "124 Main Street",
+    "email": "angel@example.com"
+  }
+  ```
+> ⚠️ **Importante:**
+> Guarda el token generado, lo necesitaras para ser autenticado en el login y ser autorizado a realizar diferentes acciones (comprar, actualizar, listar, etc)
 
 
-1. Usa la URL(`http://${CONNECT}/customer/login`), cambia por la variable CONNECT
-2. Crea una nueva solicitud GET.
-3. Agrega en el header tipo Authorization Y el valor del token generado en el registro
-4. Ingresa el cuerpo de la solicitud JSON:
-   ```json
-   {
-     "name": "John Doe",
-     "email": "john.doe@example.com"
-   }
-   ```
+###  `login`
 
-- El endpoint implementa un middleware que realiza la verificacion del JWT
+Realiza el inicio de sesión con JWT. Se espera que el cliente proporcione su nombre y correo electrónico para realizar la autenticación y el token.
 
-- Si los datos de inicio de sesión son correctos, recibirás una respuesta con el código de estado `200 OK`, indicando que el usuario ha sido encontrado y autenticado correctamente.
+- Método: **GET**
+- URL: `http://localhost:5050/customer/login`
+-  Cuerpo de la solicitud
+  ```json
+  {
+    "name": "Angel Doe",
+    "email": "angel@example.com"
+  }
+  ```
+- Agrega un header tipo Authorization con el valor del token generado en el registro.
 
-- Si el token no es valido mostrara Not token found y no permitira hacer ninguna accion (Listar productoss, comprar, actualizar, etc)
+🔔 **Listo:**
+Ya estas autenticado, podras realizar los siguientes endpoints.
 
-- Si falta alguno de los campos requeridos (nombre o email), recibirás una respuesta con el código de estado `404 Not Found`, indicando que debes enviar los datos requeridos.
+###  `delete`
 
-- Si no se encuentra un usuario con los datos proporcionados, recibirás una respuesta con el código de estado `404 Not Found`, indicando que el usuario no ha sido encontrado.
+Elimina un cliente por completo, usando su id. Reemplaza **numeroId** en el ejemplo de la url por el id en numero.
 
-#### NOTA
-Todas las consultas deben poseer en su body las columnas referentes al enpoint, con valores logicos en cada campo para que la validacion sea correcta. De lo contrario el DTO no validara los campos como correctos.
+- Método: **delete**
+- URL: `http://localhost:5050/customer/delete/numeroId`
+-  Cuerpo de la solicitud
+  ```json
+  {
+    "name": "Angel Doe",
+    "email": "angel@example.com"
+  }
+  ```
+- Si el usuario existe lo eliminara, de lo contrario mostrara que no existe o ya fue eliminado.
+
+###  `update`
+
+Actualiza informacion especifica de un cliente, usando su id para modificarlo. Reemplaza **numeroId** en el ejemplo de la url por el id en numero.
+
+- Método: **patch**
+- URL: `http://localhost:5050/customer/update/numeroId`
+-  Cuerpo de la solicitud
+  ```json
+  {
+  "name": "Juan Mart",
+  "address": "12 Main Street",
+  "email": "juan@gmail.com"
+  }
+  ```
+> 📌  **Nota:**
+> No es necesario actualizar todos los campos, solo actualiza los datos que necesites, los demas se mantendran con su valor de creacion.
+
+###  `buy`
+
+Permite a un cliente especifico comprar ciertos productos usando el id del producto. Cambia customerId por el id del cliente y productId por el id del producto a comprar
+
+- Método: **post**
+- URL: `http://localhost:5050/customer/customerId/buy/productId`
+-  Cuerpo de la solicitud
+  ```json
+  {
+  "name": "Juan Mart",
+  "address": "12 Main Street",
+  "email": "juan@gmail.com"
+  }
+  ```
+- La tabla purchases relacionara este cliente con el producto que compro, añadiendo una compra al cliente y restandole al stock del producto 1 unidad.
+
+###  `purchases`
+
+Permite listar las compras que tiene un cliente por su id. Mostrando el nombre, precio y mas info sobre los productos comprados. Cambia el customerId por el id del cliente.
+
+- Método: **get**
+- URL: `http://localhost:5050/customer/purchases/customerId`
+-  Cuerpo de la solicitud
+  ```json
+  {
+  "name": "Juan Mart",
+  "address": "12 Main Street",
+  "email": "juan@gmail.com"
+  }
+  ```
+- Si el cliente no tiene compras se enviara un mensaje indicando esto.
+
+### 2. Productos
+
+###  `add`
+
+Permite añadir productos al inventario.
+
+- Método: **post**
+- URL: `http://localhost:5050/products/add`
+-  Cuerpo de la solicitud
+  ```json
+  {
+  "name": "Polo",
+  "description": "Camiseta de manga corta, algodon.",
+  "price": 20.99,
+  "stock": 100,
+  "discount_percentage": 10,
+  "category": 2
+  }
+  ```
+- Si ya existe no se creara y mandara dicho error.
+
+### 3. Proveedores
+###  `add`
+
+Permite añadir proveedores
+
+- Método: **post**
+- URL: `http://localhost:5050/suppliers/add`
+-  Cuerpo de la solicitud
+  ```json
+  {
+  "name": "Proveedor X",
+  "email": "proveedor@example.com",
+  "phone": "555-123-4567"
+  }
+  ```
+- Si ya existe no se creara y mandara dicho error.
+
 
 ## Autor
 

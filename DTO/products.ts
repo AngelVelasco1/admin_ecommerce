@@ -14,7 +14,7 @@ export class Products {
 
     @Expose({ name: 'description' })
     @Transform(({ value }) => {
-        if (/^[a-z A-Z]+$/.test(value))
+        if (/^[a-zA-Z.,\s]+$/.test(value))
             return value
         else
             throw { status: 200, message: 'La descripcion contiene caracteres erroneos'}

@@ -3,6 +3,7 @@ import express from 'express';
 import mysql from 'mysql2/promise';
 import { plainToClass } from 'class-transformer';
 import { Customer } from '../controller/customer.js';
+
 const proxyCustomer = express();
 
 let conx;

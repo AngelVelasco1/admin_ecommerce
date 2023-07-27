@@ -9,66 +9,51 @@ dotenv.config("../");
 const storageProducts = Router();
 
 //? Add products
-storageProducts.post('/add', proxyProducts, (req, res) => {
-    const { name, description, price, stock, discount_percentage } = req.body;
+storageProducts.post('/add', proxyProducts, async (req, res) => {
+    const { name, description, price, stock, discount_percentage, category } = req.body;
     const productData = {
         name,
         description,
         price,
         stock,
-        discount_percentage
+        discount_percentage,
+        category
     };
 
     try {
         const checkName = 'SELECT id FROM products WHERE name = ?';
-        conx.query(checkName, [name], (err, results) => {
-            if (err) {
-                console.error('Error de conexión:', err.message);
-                return res.status(500).send('Error interno del servidor');
-            }
+        const [checkResult] = await conx.query(checkName, [name]);
 
-            if (results.length > 0) return res.status(409).send('El producto ya existe');
+        if (checkResult.length > 0) return res.status(409).send('El producto ya existe');
 
-            const action = 'INSERT INTO products SET ?';
-            conx.query(action, productData, (err) => {
-                if (err) {
-                    console.error('Error de conexión:', err.message);
-                    return res.status(500).send('Error interno del servidor');
-                }
-                return res.status(201).send(productData);
-            });
+        const action = 'INSERT INTO products SET ?';
+        await conx.query(action, productData);
+
+        return res.status(201).json({
+            message: "Producto añadido",
+            data: productData
         });
     } catch (err) {
         res.status(500).send('Error interno del servidor');
     }
-
-})
+});
 
 //? List Products Order alphabetically
-storageProducts.get('/list', proxyProducts, (req, res) => {
-
+storageProducts.get('/list', proxyProducts, async (req, res) => {
     try {
-        const action = 'SELECT * FROM products ORDER BY name ASC';
+        const action = 'SELECT * FROM products ORDER BY id ASC';
+        const [products] = await conx.query(action);
 
-        conx.query(
-            action, (err, result) => {
-                if (err) {
-                    return res.status(500).json(err.message)
-
-                }
-                return res.status(201).json({ result });
-            });
+        return res.status(201).json({products});
 
     } catch (err) {
-
         res.status(500).json({ error: 'Error del servidor' });
-
     }
 
 })
 
 //? Update Products
-storageProducts.patch('/update/:id', proxyProducts, (req, res) => {
+storageProducts.patch('/update/:id', proxyProducts, async(req, res) => {
     const { id } = req.params;
     const { name, description, price, stock, discount_percentage } = req.body;
     const productData = {
@@ -79,15 +64,15 @@ storageProducts.patch('/update/:id', proxyProducts, (req, res) => {
         discount_percentage,
     };
     try {
+        const checkProduct = 'SELECT id FROM products WHERE id = ?';
+        const [checkResult] = await conx.query(checkProduct, [id]);
+
+        if(checkResult.length === 0) return res.status(404).send("Producto no encontrado");
+
         const action = 'UPDATE products SET ? WHERE id = ?';
-        conx.query(action, [productData, id], (err) => {
-            if (err) {
-                console.error("Error de conexion:", err.message);
-                return res.status(500);
-            } else {
-                return res.status(201).send(JSON.stringify(productData));
-            }
-        })
+        await conx.query(action, [productData, id]);
+        
+        return res.status(201).send(JSON.stringify(productData));
 
     } catch (err) {
         res.status(500).send(err.message);
@@ -95,56 +80,38 @@ storageProducts.patch('/update/:id', proxyProducts, (req, res) => {
 })
 
 //? Delete products
-storageProducts.delete('/delete/:id', proxyProducts, (req, res) => {
+storageProducts.delete('/delete/:id', proxyProducts, async (req, res) => {
     const id = req.params.id;
     try {
         const checkProduct = 'SELECT id FROM products WHERE id = ?';
-        conx.query(checkProduct, id, (err, result) => {
-            if (err) {
-                console.error("Error de conexion:", err.message);
-                return res.status(500);
-            }
-            if (result.length == 0) {
-                return res.status(404).send("Product not found");
-            }
-            else {
-                const action = 'DELETE FROM products WHERE id = ?';
-                conx.query(action, id, (err, result) => {
-                    if (err) {
-                        console.error("Error de conexion:", err.message);
-                        return res.status(500);
-                    } else {
-                        return res.status(204).send(JSON.stringify(result));
-                    }
-                })
-            }
-        })
+        const [checkResult] = await conx.query(checkProduct, [id]);
 
+        if(checkResult.length === 0) return res.status(404).send("Producto no encontrado");
 
+        const action = 'DELETE FROM products WHERE id = ?';
+        await conx.query(action, id);
+   
+        return res.send("Producto eliminado");
     } catch (err) {
         res.status(500).send(err.message);
-
     }
 })
 //? List products related to specific category
-storageProducts.get('/category/:category', proxyProducts, (req, res) => {
+storageProducts.get('/category/:category', proxyProducts, async(req, res) => {
     const categoryId = req.params.category;
     try {
         const action = 'SELECT * FROM products WHERE category = ?';
-        conx.query(action, [categoryId], (err, result) => {
-            if (err) {
-                console.error("Error de conexion:", err.message);
-                return res.status(500);
-            } else {
-                return res.status(201).send(JSON.stringify(result));
-            }
-        })  
+        const [products] = await conx.query(action, [categoryId]);
+
+        if(products.length === 0) return res.status(404).send("No existen productos con esta categoria");
+ 
+        return res.status(201).json({products});
+    
 
     } catch (err) {
         res.status(500).send(err.message);
 
     }
 })
-
 
 export default storageProducts;
