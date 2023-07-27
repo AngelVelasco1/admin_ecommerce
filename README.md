@@ -195,7 +195,7 @@ CREATE TABLE product_supplier (
 ```
 
 
-## Endpoints
+## Endpoints Principales
 
 > ⚠️ **Importante:**
 > Las consultas deben poseer en su body columnas referentes al endpoint, con valores logicos en cada campo para que la validacion del DTO sea correcta. (Puedes copiar los valores json dados como ejemplo).
