@@ -53,7 +53,7 @@ El proyecto  utilizará las siguientes tecnologías:
 3. Instala las dependencias del proyecto:
 
    ```shell
-   npm i -E
+   npm i
    ```
 4. Inicia el servidor mediante el comando `npm run dev`.
 
